@@ -1,10 +1,8 @@
 # Appartoo-API
-Appartoo - API\
 
+create a mongoDb database named Appartoo-Api
 
-create a mongoDb named Appartoo-Api
-
-npm install\
+npm install
 npm start
 
 # Swagger
