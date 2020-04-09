@@ -1,10 +1,13 @@
-# Appartoo-API
+# Dependencies
 
-create a mongoDb database named Appartoo-Api
+Create a mongodb database named "Appartoo-Api"
 
-npm install
-npm start
+run `npm install`
 
 # Swagger
 
 Test and see the Api with Swagger on http://localhost:3000
+
+# Start
+
+run `npm start` to start the api
