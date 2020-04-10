@@ -2,25 +2,45 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const config = require('../config/config');
+const user = require('./users');
 
 mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`, { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.model('Friends', config.schema.FriendSchema);
 const Friends = require('mongoose').model('Friends');
+const User = require('mongoose').model('User');
+
+
 
 //middleware for create
 const createFriend = function (req, res, next) {
   const friend = new Friends(req.body);
-
-  friend.save(function (err) {
+  User.findOne({email: req.body.emailFriend}, function (err, user) {
     if (err) {
       next(err);
     } else {
-      res.json(friend);
+      if (user == null) {
+        let newUser = new User({email: req.body.emailFriend, password: "azerty", name: "name", age: 12});
+        newUser.save(function (err) {
+          if (err) {
+            next(err);
+          }
+        });
+      }
+      friend.save(function (err) {
+        if (err) {
+          next(err);
+        }      
+        else {
+          res.json(friend);
+        }
+      });
     }
   });
-};
 
+  
+};
+  
 
 const deleteFriend = function (req, res, next) {
   // console.log("YO");
@@ -57,6 +77,17 @@ const getByIdFriend = function (req, res, next) {
   });
 };
 
+function getByEmail(email) {
+  console.log("getbyemailfunc")
+
+  User.findOne({email: email}, function (err, user) {
+    if (err) {
+      next(err);
+    } else {
+      return(user);
+    }
+  });
+};
 
 router.route('/')
     .post(createFriend)
